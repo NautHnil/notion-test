@@ -5,8 +5,13 @@ import { Client } from "@notionhq/client";
 import { format, parseISO } from "date-fns";
 import { FaRegClock } from "react-icons/fa";
 import { LOCATION_ORIGIN } from "@constants";
+import slugify from "slugify";
+import { isDev } from "lib/config";
+import { uuidToId } from "notion-utils";
 
 export default function NotionBlogPage({ results }) {
+  // useEffect(() => console.log(results));
+
   const getDatabaseDisplay = () => {
     let jsx = [];
 
@@ -17,6 +22,15 @@ export default function NotionBlogPage({ results }) {
         ? blog.cover.external.url
         : `${LOCATION_ORIGIN}/media/no-img.jpg`;
 
+      const title = blog.properties.Title.title[0]?.plain_text;
+      let url = blog.url.toLowerCase().replace("https://www.notion.so/", "");
+
+      if (!isDev) {
+        let urlArr = url.split("-");
+        urlArr.pop();
+        url = urlArr.join("-");
+      }
+
       jsx.push(
         <div
           key={blog.id}
@@ -26,17 +40,17 @@ export default function NotionBlogPage({ results }) {
             <img
               className={`relative top-1/2 transform -translate-y-1/2 scale-105`}
               src={image}
-              alt={blog.properties.Title.title[0].plain_text}
+              alt={title}
             />
           </div>
           <div className="flex flex-col flex-grow p-5">
             <div className={`mb-auto`}>
               <h2 className="text-xl font-bold font-fancy mb-4">
-                <NextLink href={`/blog/${blog.id}`}>
+                <NextLink href={`/blog/${url}`}>
                   <a
                     className={`text-yellow-400 hover:text-yellow-600 transition-colors`}
                   >
-                    {blog.properties.Title.title[0].plain_text}
+                    {title}
                   </a>
                 </NextLink>
               </h2>
@@ -53,7 +67,7 @@ export default function NotionBlogPage({ results }) {
               </p>
             </div>
 
-            <NextLink href={`/blog/${blog.id}`}>
+            <NextLink href={`/blog/${url}`}>
               <a>Read More</a>
             </NextLink>
           </div>

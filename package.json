@@ -3,12 +3,21 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "export": "next export",
+    "build-export": "next build && next export"
   },
   "dependencies": {
+    "@notionhq/client": "^0.4.6",
     "next": "latest",
+    "notion-client": "^4.10.0",
+    "notion-types": "^4.10.0",
+    "notion-utils": "^4.10.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "react-notion-x": "^4.11.0",
+    "sass": "^1.43.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",
